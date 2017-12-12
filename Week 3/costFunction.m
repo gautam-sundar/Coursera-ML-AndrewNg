@@ -22,9 +22,9 @@ grad = zeros(size(theta));
 
 h = sigmoid(X*theta); % h is a 100 x 1 matrix
 
-J = (1/m) * (-y'*log(h) - (1-y)'*log(1 - h));
+J = (1/m) * (-y'*log(h) - (1-y)'*log(1 - h)); % J is a scalar
 
-grad = (1/m)*((h - y)'*X)';
+grad = (1/m)*((h - y)'*X)'; % grad is (n+1) x 1 vector
 
 % =============================================================
 
