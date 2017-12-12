@@ -12,9 +12,9 @@ figure; hold on;
 %               examples and 'ko' for the negative examples.
 %
 
-X_label_0 = X(find(y == 0),:)
+X_label_0 = X(find(y == 0),:);
 plot(X_label_0(:,1), X_label_0(:,2), 'r+')
-X_label_1 = X(find(y == 1), :)
+X_label_1 = X(find(y == 1), :);
 plot(X_label_1(:,1), X_label_1(:,2), 'go')
 
 
