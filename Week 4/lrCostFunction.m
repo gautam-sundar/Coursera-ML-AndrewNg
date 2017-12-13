@@ -37,13 +37,13 @@ grad = zeros(size(theta));
 %
 
 
+h = sigmoid(X*theta); % X is a m x (n+1) matrix. theta is a (n+1) x 1 matrix
 
+theta_1_to_n = [0;theta(2:end,:)];
 
+J = (1/m) * (-y'*log(h) - (1-y)'*log(1 - h)) + (lambda/(2*m))*sum(theta_1_to_n.^2);
 
-
-
-
-
+grad = (1/m)*((h - y)'*X)' + (lambda/m)*theta_1_to_n;
 
 % =============================================================
 
