@@ -62,18 +62,18 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
-Y = zeros(m,10);
+% convert y from a 5000 x 1 vector to a 5000 x 10 matrix Y
+Y = zeros(m,10); 
 for index = 1:m
-    Y(index, y(index)) = 1;
+    Y(index, y(index)) = 1; % Y is a 5000 x 10 matrix
 end
 
+% calculate hidden layer a_2 and output a_3 or h
 a_2 = sigmoid([ones(m,1) X] * Theta1');
 a_3 = sigmoid([ones(m,1) a_2] * Theta2');
-h = a_3;
+h = a_3; % h is a 5000 x 10 matrix
 
 J = (1/m) * sum( sum( ( -Y.*log(h) - (1-Y).*log(1 - h) ), 1 ), 2);
-
-
 
 
 
