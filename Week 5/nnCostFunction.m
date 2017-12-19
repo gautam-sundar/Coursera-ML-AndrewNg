@@ -68,19 +68,39 @@ for index = 1:m
     Y(index, y(index)) = 1; % Y is a 5000 x 10 matrix
 end
 
-size(Theta1);
-size(Theta2);
-size(Y);
+% X is 5000 x 400
+% Theta1 is 25 x 401 matrix
+% Theta2 is 10 x 26 matrix
 
-% calculate hidden layer a_2 and output a_3 or h
-a_2 = sigmoid([ones(m,1) X] * Theta1'); % 5000 x 25 matrix
-a_3 = sigmoid([ones(m,1) a_2] * Theta2'); % 5000 x 10 matrix
-h = a_3; % h is a 5000 x 10 matrix
+X_b = [ones(m,1) X]; % X incl bias unit. 5000 x 401 matrix
 
-size(h);
+% hidden layer output activations
+z_2 = Theta1 * X_b'; % 25 x 5000 matrix
+a_2 = sigmoid(z_2); % 25 x 5000 matrix 
 
-J = (1/m) * sum( sum( ( -Y.*log(h) - (1-Y).*log(1 - h) ), 1 ), 2);
+% ouput layer output activations
+z_3 = Theta2 * [ones(m,1) (a_2)']';
+a_3 = sigmoid(Theta2 * [ones(m,1) (a_2)']'); % 10 x 5000  matrix
+h = a_3; % h is 10 x 5000  matrix
 
+J = (1/m) * sum( sum( ( -Y'.*log(h) - (1-Y)'.*log(1 - h) ), 1 ), 2);
+
+% backpropagation algorithm
+
+% calculate error at each output unit
+d3 = (h - Y'); % 10 x 5000  matrix
+
+% calculate error at each hidden layer unit. The first term is the gradient of the Cost with a_2. The second term is the gradient of a_2 with z_2.
+d2 = (Theta2(:,2:end)' * d3).*sigmoidGradient(z_2); % 25 x 5000 matrix
+
+% knowing the errors at each unit and level, calculate the gradient of the cost function with Theta2. 
+Delta_2 = (d3*[ones(m,1) (a_2)']); % 10 x 26 matrix
+% knowing the errors at each unit and level, calculate the gradient of the cost function with Theta1.
+Delta_1 = d2*(X_b); % 25 x 401
+
+Theta2_grad =  Delta_2/m;
+
+Theta1_grad =  Delta_1/m;
 
 
 % -------------------------------------------------------------
@@ -89,6 +109,5 @@ J = (1/m) * sum( sum( ( -Y.*log(h) - (1-Y).*log(1 - h) ), 1 ), 2);
 
 % Unroll gradients
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
-
 
 end
