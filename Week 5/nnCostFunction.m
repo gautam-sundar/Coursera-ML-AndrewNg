@@ -83,7 +83,7 @@ z_3 = Theta2 * [ones(m,1) (a_2)']';
 a_3 = sigmoid(Theta2 * [ones(m,1) (a_2)']'); % 10 x 5000  matrix
 h = a_3; % h is 10 x 5000  matrix
 
-J = (1/m) * sum( sum( ( -Y'.*log(h) - (1-Y)'.*log(1 - h) ), 1 ), 2);
+J = (1/m) * sum( sum( ( -Y'.*log(h) - (1-Y)'.*log(1 - h) ), 1 ), 2) + (lambda/(2*m))*(sum(sum(Theta1(:, 2:end).^2,1),2) + sum(sum(Theta2(:, 2:end).^2,1),2) );
 
 % backpropagation algorithm
 
@@ -98,14 +98,9 @@ Delta_2 = (d3*[ones(m,1) (a_2)']); % 10 x 26 matrix
 % knowing the errors at each unit and level, calculate the gradient of the cost function with Theta1.
 Delta_1 = d2*(X_b); % 25 x 401
 
-Theta2_grad =  Delta_2/m;
+Theta1_grad =  Delta_1/m + lambda/m*([zeros(hidden_layer_size, 1) Theta1(:, 2:end)]);
 
-Theta1_grad =  Delta_1/m;
-
-
-% -------------------------------------------------------------
-
-% =========================================================================
+Theta2_grad =  Delta_2/m + lambda/m*([zeros(num_labels, 1) Theta2(:, 2:end)]);
 
 % Unroll gradients
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
